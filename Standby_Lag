@@ -1,0 +1,16 @@
+-- a quick script to execute at the Primary
+-- retrieves SCNs from Primary and Standby
+-- SCN_TO_TIMESTAMP works only at the Primary which is OPEN
+-- SCNs are updated approximately every 3seconds
+-- so you may run this script a few times over a minute
+select scn_to_timestamp(current_scn) 
+          - scn_to_timestamp(applied_scn)   
+          as Time_Diff
+from v$database d,
+(select applied_scn from  v$archive_dest a where target = 'STANDBY')
+-- if the query returns :
+-- ORA-08181: specified number is not a valid system change number
+-- ORA-06512: at "SYS.SCN_TO_TIMESTAMP", line 1
+-- it would mean that the last SCN from the Standby is very old
+-- older than what the SCN_TO_TIMESTAMP function can return
+-- 
