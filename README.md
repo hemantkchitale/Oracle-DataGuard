@@ -1,2 +1,2 @@
 # Oracle-DataGuard
-Scripts and Notes on Oracle DataGuard
+Scripts and Notes / Documentation and Walk-throughs on Oracle DataGuard
